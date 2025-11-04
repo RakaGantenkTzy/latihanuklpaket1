@@ -70,24 +70,13 @@ function getSummary(request, response) {
             sakit: 0,
             alpa: 0
         }
+
         filteredData.forEach(f => {
-            if ((f.date).getMonth() == m) {
-                switch (f.status) {
-                    case "hadir":
-                        attendanceSummary.hadir++
-                        break
-                    case "izin":
-                        attendanceSummary.izin++
-                        break
-                    case "sakit":
-                        attendanceSummary.sakit++
-                        break
-                    case "alpa":
-                        attendanceSummary.alpa++
-                        break
-                }
+            if((f.date).getMonth() == m) {
+                attendanceSummary[f.status]++
             }
         })
+
         summary.push({
             month: m + 1,
             attendance_summary: attendanceSummary
@@ -129,33 +118,29 @@ function getAnalysis(request, response) {
         }
     })
 
-    let totalAttendance = {
+    let attendanceCount = {
         hadir: 0,
         izin: 0,
         sakit: 0,
         alpa: 0
     }
-    filteredData.forEach(a => {
-        Object.keys(totalAttendance).forEach(key => {
-            if (a.status == key) {
-                totalAttendance[key]++
-            }
-        })
+    filteredData.forEach(f => {
+        attendanceCount[f.status]++
     })
 
-    let attendanceCount = filteredData.length
+    let totalAttendance = filteredData.length
     let attendanceRate = {
-        hadir_percentage: `${totalAttendance.hadir / attendanceCount * 100} Percent`,
-        izin_percentage: `${totalAttendance.izin / attendanceCount * 100} Percent`,
-        sakit_percentage: `${totalAttendance.sakit / attendanceCount * 100} Percent`,
-        alpa_percentage: `${totalAttendance.alpa / attendanceCount * 100} Percent`
+        hadir_percentage: `${Math.round(attendanceCount.hadir / totalAttendance * 100)} Percent`,
+        izin_percentage: `${Math.round(attendanceCount.izin / totalAttendance * 100)} Percent`,
+        sakit_percentage: `${Math.round(attendanceCount.sakit / totalAttendance * 100)} Percent`,
+        alpa_percentage: `${Math.round(attendanceCount.alpa / totalAttendance * 100)} Percent`
     }
 
     let groupedAnalysis = {
         group: filter.group_by,
         total_users: userIDs.length,
         attendance_rate: attendanceRate,
-        total_attendance: totalAttendance
+        attendance_count: attendanceCount
     }
 
     return response.json({
