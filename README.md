@@ -92,7 +92,7 @@ Tidak ada error handling, saya malas nambahin.
 
 ---
 
-### 📈 Analisis Tingkat Kehadiran Berdasarkan Parameter Tertentu
+### Analisis Tingkat Kehadiran Berdasarkan Parameter Tertentu
 **Endpoint:** `/attendance/analysis`  
 **Method:** `POST`  
 **Description:** Melakukan analisis tingkat kehadiran pengguna berdasarkan periode waktu dan kategori tertentu.
